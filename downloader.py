@@ -1,9 +1,12 @@
-import requests, os
+import requests, os, threading
+from waiting import wait
 
-host = ""
-# hosts: setup.roblox.com | setup.gametest2.robloxlabs.com
-target = ""
-# targets: Client | WindowsPlayer | RccService | MFCStudio | Studio | Studio64
+os.system("cls")
+
+print("simul's deployhistory client downloader")
+
+host = input("host: ")
+target = input("target: ")
 
 ap = ""
 if target == "Client" or target == "WindowsPlayer" or target == "MFCStudio":
@@ -13,17 +16,13 @@ elif target == "Studio" or target == "Studio64":
 elif target == "RccService":
     ap = "RCCService.zip"
 
-os.system("cls")
-
-print("simul's deployhistory client downloader")
-print(f"host: {host}")
-print(f"target: {target}")
-print("fetching deployhistory...")
-
 deployhistory = requests.get(f"http://{host}/DeployHistory.txt").text
 lines = deployhistory.splitlines()
+thing = 0
 
 def download(version):
+    global thing
+    thing = thing + 1
     get = requests.get(f"http://{host}/{version}-{ap}")
     if get.status_code == 200:
         f = open(f"{version}-{ap}", "wb")
@@ -32,10 +31,16 @@ def download(version):
         print(f"{version} downloaded")
     else:
         print(f"{version} could not be downloaded")
+    
+    thing = thing - 1
 
 for ln in lines:
     if ln.find(target) != -1:
         spl = ln.split(" ")
         version = spl[2]
         
-        download(version)
+        if thing < 15:
+            threading.Thread(target=download, args=(version,)).start()
+        else:
+            wait(lambda: (thing < 25))
+            threading.Thread(target=download, args=(version,)).start()
