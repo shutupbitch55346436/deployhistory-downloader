@@ -1,7 +1,7 @@
 # deployhistory-downloader
 provide host and target and you're good to go, it'll do the rest for ya
 
-requires python and requests library
+requires python, requests lib, and waiting lib
 
 
 available roblox hosts:
