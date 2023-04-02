@@ -9,8 +9,8 @@ available roblox hosts:
 - setup.gametest2.robloxlabs.com
 
 available targets:
-- Client
-- WindowsPlayer
+- Client (all players before sep 11 2013)
+- WindowsPlayer (all players after sep 4 2013)
 - RccService
 - MFCStudio
 - Studio
